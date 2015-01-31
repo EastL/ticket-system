@@ -7,23 +7,69 @@ html , body
 	padding:0;
 	margin:0;
 }
-body{background-color:#282828;}
 
+
+
+
+#tirckbgm
+{
+	position: absolute;
+	left: 10%;
+	width:80%;
+	height:100%;
+	background-image: url("res/bgm.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size:100%;
+}
 #loginb
 {
-	font-size: 30px;
-	padding:0px 15px;
+	text-decoration:none;
+	color:#111;
+	font-size: 60px;
+	font-weight: bold;
+	padding:4.5%;
 	position:absolute;
-	top:20%;
-	left:10%;
-	border-radius: 15px;
-	background-color:rgba(120,150,120,1);
+	top:45%;
+	left:57%;
+	border-radius: 100%;
+	background-color:#003399;
+	background-image: linear-gradient(bottom, rgb(62,51,46) 0%, rgb(101,86,78) 100%);
+	box-shadow: inset 0px 1px 0px #9e8d84, 0px 5px 0px 0px #322620, 0px 10px 5px rgba(0,0,0,0.5);
 }
 #loginb:hover
 {
-	color:#fff;
-	background-color:rgba(155,180,150,1);
+	color:#ededed;
+	background-color:#003399;
 }
+#loginb:active {
+	top:46%;
+	background-image: linear-gradient(bottom, rgb(62,51,46) 100%, rgb(101,86,78) 0%);
+	box-shadow: inset 0px 1px 0px #9e8d84, 0px 2px 0px 0px #322620, 0px 5px 3px rgba(0,0,0,0.5);
+}
+#loginb::before {
+	background-color:#322620;
+	background-repeat:no-repeat;
+	background-position:center center;
+	content:"";
+	position:absolute;
+	top:50%;
+	margin-top:-9px;
+	box-shadow: inset 0px 1px 0px #19120f, 0px 1px 0px #827066;
+}
+#loginb:active::before {
+	top:50%;
+	margin-top:-12px;
+	box-shadow: inset 0px 1px 0px #827066, 0px 3px 0px #19120f, 0px 6px 3px #382e29;
+}
+
+
+
+
+
+
+
+
 
 #outshadl
 {

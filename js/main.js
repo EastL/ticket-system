@@ -15,10 +15,12 @@ function login()
 {
 	//
 	hid(200);
+	$('#tirckbgm').hide();
 }
 function createAccount()
 {
 	//
+	login();
 	hid(200);
 }
 
