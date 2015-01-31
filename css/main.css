@@ -35,7 +35,7 @@ html , body
 	border-radius: 100%;
 	background-color:#003399;
 	background-image: linear-gradient(bottom, rgb(62,51,46) 0%, rgb(101,86,78) 100%);
-	box-shadow: inset 0px 1px 0px #9e8d84, 0px 5px 0px 0px #322620, 0px 10px 5px rgba(0,0,0,0.5);
+	box-shadow: inset 0px 1px 0px #9e8d84, 0px 8px 0px 0px #322620, 0px 20px 5px rgba(0,0,0,0.5);
 }
 #loginb:hover
 {
@@ -45,7 +45,7 @@ html , body
 #loginb:active {
 	top:46%;
 	background-image: linear-gradient(bottom, rgb(62,51,46) 100%, rgb(101,86,78) 0%);
-	box-shadow: inset 0px 1px 0px #9e8d84, 0px 2px 0px 0px #322620, 0px 5px 3px rgba(0,0,0,0.5);
+	box-shadow: inset 0px 1px 0px #9e8d84, 0px 2px 0px 0px #281810, 0px 5px 3px rgba(0,0,0,0.5);
 }
 #loginb::before {
 	background-color:#322620;
