@@ -7,9 +7,7 @@ html , body
 	padding:0;
 	margin:0;
 }
-
-body
-{background-color:#282828;}
+body{background-color:#282828;}
 
 #loginb
 {
@@ -19,11 +17,12 @@ body
 	top:20%;
 	left:10%;
 	border-radius: 15px;
-	background-color:rgba(100,150,150,1);
+	background-color:rgba(120,150,120,1);
 }
 #loginb:hover
 {
-	background-color:rgba(120,180,120,1);
+	color:#fff;
+	background-color:rgba(155,180,150,1);
 }
 
 #outshadl
@@ -42,30 +41,38 @@ body
 	top:23%;
 	left:33.5%;
 	width:26%;
-	height:50%;
+	height:28%;
 	background-color: #5a5a5a;
 	border:solid 5px;
 	border-radius: 10px;
 	border-color:#888;
 	padding:15px;
 }
+#lginbox{float:left;}
 
 #udata
 {
 	margin:5%;
 	padding:0% 5%;
 	width:80%;
-	height:50%;
+	height:45%;
 }
 .colorw{color:rgba(245,255,240,0.8);}
 .loginp
 {
 	font-size:18px;
-	margin:5px 0px;
+	margin:7px;
 	border-radius: 5px;
 }
 
-
+.inpbuton
+{
+	font-size:18px;
+	border-radius: 10px;
+	margin:2% 5%;
+	background-color:#CCC;
+}
+.inpbuton:hover{background-color: #f7f7f7;}
 
 
 
