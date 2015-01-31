@@ -3,7 +3,10 @@ var
 http = require('http'),
 path = require('path'),
 fs = require('fs'),
-io = require('socket.io');
+io = require('socket.io'),
+qs = require('querystring'),
+log_in = require('node/web_login.js');
+
 
 //these are the only file types we will support for now
 extensions = {
@@ -65,6 +68,16 @@ function requestHandler(req, res) {
 	var localFolder = __dirname + '/' /*'/public/'*/,
 	page404 = localFolder + '404.html';
 
+ 	var postdata = "";
+ 	if(req.method == "POST"){
+		req.setEncodeing("utf8");
+		req.addListener("data", function(postchunk){
+			postdata += postchunk;
+		});
+		req.addListener("end", function(){
+			log_in.login(postdata);
+		});
+	}
 	//do we support the requested file type?
 	if(!extensions[ext]){
 		//for now just send a 404 and a short message
