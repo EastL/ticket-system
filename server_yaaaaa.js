@@ -3,6 +3,7 @@ var
 http = require('http'),
 path = require('path'),
 fs = require('fs'),
+io = require('socket.io');
 
 //these are the only file types we will support for now
 extensions = {
@@ -79,7 +80,9 @@ function requestHandler(req, res) {
 };
 
 //step 2) create the server
-http.createServer(requestHandler)
+var server = http.createServer(requestHandler)
 
 //step 3) listen for an HTTP request on port 3000
 .listen(3000);
+
+io.listen(server);
