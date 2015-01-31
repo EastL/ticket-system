@@ -16,18 +16,19 @@ function sho(dt)
 
 function login()
 {
-	var dats = {'name':$('#acount').val(),'passwd':$('#pwd').val()};
+	//var dats = {name:$('#acount').val(),passwd:$('#pwd').val()};
+	//alert("LaLaLa " + dats['name'] + ' login!!');
 	$.ajax({
 		type:"POST",
 		url:"/",
-		data:dats,
+		data:{name:$('#acount').val(),passwd:$('#pwd').val()},
 		success:function(dat)
 		{
-			alert("LaLaLa " + dat['name'] + ' login!!');
+			alert("LaLaLa " + $('#acount').val() + ' login!!');
+			hid(200);
+			$('#tirckbgm').hide();
 		}
 	});
-	hid(200);
-	$('#tirckbgm').hide();
 }
 function createAccount()
 {

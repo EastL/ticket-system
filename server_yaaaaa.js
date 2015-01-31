@@ -68,15 +68,13 @@ function requestHandler(req, res) {
 	var localFolder = __dirname + '/' /*'/public/'*/,
 	page404 = localFolder + '404.html';
 
- 	var postdata = "";
+ 	var postdata = [],iii=0;
  	if(req.method == "POST"){
-		req.addListener("data", function(postchunk){
-			postdata += postchunk;
-		});
+		req.addListener("data", function(postchunk){postdata[iii++] = postchunk;});
 		req.addListener("end", function(){
 			var input = '{\n' +
-	                      '\t"Name" : "' + postdata.name + '",\n'
-	                    + '\t"Password" : "' + postdata.passwd + '",\n'
+	                      '\t"Name" : "' + postdata[0] + '",\n'
+	                    + '\t"Password" : "' + postdata[1]+ '",\n'
 	                  + '}\n';
 		        fs.writeFile('./json/log.json', input, function(err){
 		        if(err) console.log(err);
