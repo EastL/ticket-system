@@ -16,18 +16,21 @@ function sho(dt)
 
 function login()
 {
-	var dats = {'name':$('#acount').val(),'passwd':$('#pwd').val()};
+	//var dats = {name:$('#acount').val(),passwd:$('#pwd').val()};
 	$.ajax({
 		type:"POST",
 		url:"/",
-		data:dats,
+		data:'{"name":"'+$('#acount').val()+'","passwd":"'+$('#pwd').val()+'"}',
 		success:function(dat)
 		{
-			alert("LaLaLa " + dat['name'] + ' login!!');
+			if(dat == 'err')alert("帳號已被使用");
+			else
+			{
+				hid(200);
+				$('#tirckbgm').hide();
+			}
 		}
 	});
-	hid(200);
-	$('#tirckbgm').hide();
 }
 function createAccount()
 {
