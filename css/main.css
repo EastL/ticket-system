@@ -86,8 +86,8 @@ html , body
 	z-index: 1001;
 	top:23%;
 	left:33.5%;
-	width:26%;
-	height:28%;
+	width:350px;
+	height:150px;
 	background-color: #5a5a5a;
 	border:solid 5px;
 	border-radius: 10px;
@@ -98,9 +98,14 @@ html , body
 
 #udata
 {
-	margin:5%;
+	margin:0% 5%;
+	margin-bottom: 5%;
 	padding:0% 5%;
 	width:80%;
+	height:55%;
+}
+#udatab
+{
 	height:45%;
 }
 .colorw{color:rgba(245,255,240,0.8);}
