@@ -68,45 +68,42 @@ function requestHandler(req, res) {
 	var localFolder = __dirname + '/' /*'/public/'*/,
 	page404 = localFolder + '404.html';
 
+
 	var postdata = "";
- 	if(req.method == "POST"){
+	if(req.method == "POST"){
 		req.addListener("data", function(postchunk){postdata = postchunk;});
 		req.addListener("end", function(){
-			
 			fs.exists('./json/log.json',function(exists){
-				if(!exists) fs.writeFile('./json/log.json', postdata, function(err){
-		        		if(err) console.log(err);
+				var readdata=[];
+				if(exists)fs.readFile('./json/log.json', function(err, data)
+				{
+					if(err) console.log(err);
+					readdata=JSON.parse(data);
+					console.log(readdata);
 				});
-				else{
-					var readdata=[];
-					fs.readFile('./json/log.json', function(err, data){
-						if(err) console.log(err);
-						readdata=JSON.parse(data);
-						console.log(readdata);
-					});
-					var t_f = 1;
-					for(var i = 0; i < readdata.length; i++)
-						if(readdata[i]["name"] == postdata["name"]){
-							t_f = 0;
-							var msg = 'err';
-							res.write( msg);
-							//console.log(read[""])
-						}
-					if(t_f){
-		        			fs.appendFile('./json/log.json',',' + postdata, function(err){if(err) console.log(err);});
+				for(var i = 0; i < readdata.length; i++)
+				{
+					if(readdata[i]["name"] == postdata["name"])
+					{
+						var msg = 'err';
+						res.write( msg);
 					}
-		        	}
+					else fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
+					{
+						if(err) console.log(err);
+						else console.log('save success');
+					});
+				}			
 			});
 		});
  	/*var postdata = "";
+>>>>>>> ba507cdad9b5dce538f372a9bb8750bec78a30c1
  	if(req.method == "POST"){
-		req.addListener("data", function(postchunk){
-			postdata += postchunk;
-		});
+		req.addListener("data", function(postchunk){postdata[iii++] = postchunk;});
 		req.addListener("end", function(){
 			var input = '{\n' +
-	                      '\t"Name" : "' + postdata.name + '",\n'
-	                    + '\t"Password" : "' + postdata.passwd + '",\n'
+	                      '\t"Name" : "' + postdata[0] + '",\n'
+	                    + '\t"Password" : "' + postdata[1]+ '",\n'
 	                  + '}\n';
 		        fs.writeFile('./json/log.json', input, function(err){
 		        	if(err) console.log(err);
