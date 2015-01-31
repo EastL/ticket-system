@@ -68,7 +68,37 @@ function requestHandler(req, res) {
 	var localFolder = __dirname + '/' /*'/public/'*/,
 	page404 = localFolder + '404.html';
 
- 	var postdata = "";
+	var postdata = "";
+ 	if(req.method == "POST"){
+		req.addListener("data", function(postchunk){postdata = postchunk;});
+		req.addListener("end", function(){
+			
+			fs.exists('./json/log.json',function(exists){
+				if(!exists) fs.writeFile('./json/log.json', postdata, function(err){
+		        		if(err) console.log(err);
+				});
+				else{
+					var readdata=[];
+					fs.readFile('./json/log.json', function(err, data){
+						if(err) console.log(err);
+						readdata=JSON.parse(data);
+						console.log(readdata);
+					});
+					var t_f = 1;
+					for(var i = 0; i < readdata.length; i++)
+						if(readdata[i]["name"] == postdata["name"]){
+							t_f = 0;
+							var msg = 'err';
+							res.write( msg);
+							//console.log(read[""])
+						}
+					if(t_f){
+		        			fs.appendFile('./json/log.json',',' + postdata, function(err){if(err) console.log(err);});
+					}
+		        	}
+			});
+		});
+ 	/*var postdata = "";
  	if(req.method == "POST"){
 		req.addListener("data", function(postchunk){
 			postdata += postchunk;
@@ -79,10 +109,10 @@ function requestHandler(req, res) {
 	                    + '\t"Password" : "' + postdata.passwd + '",\n'
 	                  + '}\n';
 		        fs.writeFile('./json/log.json', input, function(err){
-		        if(err) console.log(err);
-			console.log("save!!");
+		        	if(err) console.log(err);
+				console.log("save!!");
 		        });
-		});
+		});*/
 	}
 	//do we support the requested file type?
 	if(!extensions[ext]){
