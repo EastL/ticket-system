@@ -19,11 +19,11 @@ function login()
 	var dats = {'name':$('#acount').val(),'passwd':$('#pwd').val()};
 	$.ajax({
 		type:"POST",
-		url:"../node/web_login.js",
-		data:{obj:dats},
+		url:"/",
+		data:dats,
 		success:function(dat)
 		{
-			alert("LaLaLa " + dat);
+			alert("LaLaLa " + dat['name'] + ' login!!');
 		}
 	});
 	hid(200);
