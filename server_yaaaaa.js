@@ -5,7 +5,7 @@ path = require('path'),
 fs = require('fs'),
 io = require('socket.io'),
 qs = require('querystring'),
-log_in = require('node/web_login.js');
+//log_in = require('./node/web_login.js');
 
 
 //these are the only file types we will support for now
@@ -70,12 +70,18 @@ function requestHandler(req, res) {
 
  	var postdata = "";
  	if(req.method == "POST"){
-		req.setEncodeing("utf8");
 		req.addListener("data", function(postchunk){
 			postdata += postchunk;
 		});
 		req.addListener("end", function(){
-			log_in.login(postdata);
+			var input = '{\n' +
+	                      '\t"Name" : "' + postdata.name + '",\n'
+	                    + '\t"Password" : "' + postdata.passwd + '",\n'
+	                  + '}\n';
+		        fs.writeFile('./json/log.json', input, function(err){
+		        if(err) console.log(err);
+			console.log("save!!");
+		        });
 		});
 	}
 	//do we support the requested file type?
