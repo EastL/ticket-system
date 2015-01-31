@@ -68,7 +68,36 @@ function requestHandler(req, res) {
 	var localFolder = __dirname + '/' /*'/public/'*/,
 	page404 = localFolder + '404.html';
 
- 	var postdata = [],iii=0;
+
+	var postdata = "";
+	if(req.method == "POST"){
+		req.addListener("data", function(postchunk){postdata = postchunk;});
+		req.addListener("end", function(){
+			fs.exists('./json/log.json',function(exists){
+				var readdata=[];
+				if(exists)fs.readFile('./json/log.json', function(err, data)
+				{
+					if(err) console.log(err);
+					readdata=JSON.parse(data);
+					console.log(readdata);
+				});
+				for(var i = 0; i < readdata.length; i++)
+				{
+					if(readdata[i]["name"] == postdata["name"])
+					{
+						var msg = 'err';
+						res.write( msg);
+					}
+					else fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
+					{
+						if(err) console.log(err);
+						else console.log('save success');
+					});
+				}			
+			});
+		});
+ 	/*var postdata = "";
+>>>>>>> ba507cdad9b5dce538f372a9bb8750bec78a30c1
  	if(req.method == "POST"){
 		req.addListener("data", function(postchunk){postdata[iii++] = postchunk;});
 		req.addListener("end", function(){
@@ -77,10 +106,10 @@ function requestHandler(req, res) {
 	                    + '\t"Password" : "' + postdata[1]+ '",\n'
 	                  + '}\n';
 		        fs.writeFile('./json/log.json', input, function(err){
-		        if(err) console.log(err);
-			console.log("save!!");
+		        	if(err) console.log(err);
+				console.log("save!!");
 		        });
-		});
+		});*/
 	}
 	//do we support the requested file type?
 	if(!extensions[ext]){
