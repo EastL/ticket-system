@@ -81,19 +81,21 @@ function requestHandler(req, res) {
 					readdata=JSON.parse(data);
 					console.log(readdata);
 				});
+				console.log(readdata.length);
 				for(var i = 0; i < readdata.length; i++)
 				{
+					console.log(readdata[i]["name"]);
 					if(readdata[i]["name"] == postdata["name"])
 					{
 						var msg = 'err';
 						res.write( msg);
 					}
-					else fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
+				}
+					fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
 					{
 						if(err) console.log(err);
 						else console.log('save success');
-					});
-				}			
+					});	
 			});
 		});
  	/*var postdata = "";
