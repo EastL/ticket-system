@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
 <meta charset="utf-8" />
   <link rel="icon" href="favicon.ico">
@@ -79,10 +79,12 @@
     <!--<script src="js/bootstrap.min.js"></script>-->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <!--<script src="config.js"></script>-->
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
 var c = console;
 var seats=["1","2","3","4","5","6","7","8","9"];
 var order = [];
+var socket = io();
 function init() {
 	for (var i in seats) {
 	  $("#seats").append('<button type="button" class="btn btn-lg btn-primary ticket">'+seats[i]+'</button>');
@@ -99,221 +101,17 @@ function init() {
 	});
 	$('#save').click(function() {
 		c.log('save order '+order);
-	});	
+    		socket.emit('save order', JSON.stringify(order));
+	});
+  socket.on('save order', function(order){
+     c.log('broadcast: save order '+order);
+  });
+	
 }
 </script>
 
 <!--    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"></script>-->
+
+
 </body>
 </html>
-
-<!--
-
- $.ajax({
-    type: "POST",
-    url: "/save",
-	timeout:2000,
-    data: { seats: order },
-  })
-  .done(function(data) {
-    alert( "存檔完成!");
-  })
-  .fail(function() {
-    alert( "存檔失敗，請登入！" );
-//	login();
-<script>
-function path() {
-  var tokens = filepath.split(':');
-  return { domain:tokens[0], file:tokens[1] };
-}
-
-Server = {};
-
-Server.save=function(domain, file, doc) {
-  $.ajax({
-    type: "POST",
-    url: "/db/"+domain+"/"+file,
-	timeout:2000,
-    data: { obj: doc },
-  })
-  .done(function(data) {
-    alert( "存檔完成!");
-  })
-  .fail(function() {
-    alert( "存檔失敗，請登入！" );
-	login();
-  });
-}
-
-Server.load=function(domain, file) {
-  return $.ajax({
-    type: "GET",
-    url: "./db/"+domain+"/md/"+file,
-	timeout:2000,
-    data: {}
-  });
-}
-
-Server.login=function() {
-  $.ajax({
-    type: "POST",
-    url: "/login",
-	timeout:2000,
-    data: { user:$('#loginUser').val(), password:$('#loginPassword').val() },
-  })
-  .done(function(data) {
-    alert( "登入成功!");
-	$('#loginPassword').val('');
-	edit();
-  })
-  .fail(function() {
-    alert( "登入失敗！" );
-	login();
-  });
-}
-
-Server.logout=function() {
-  $.ajax({
-    type: "POST",
-    url: "/logout",
-	timeout:2000,
-    data: {},
-  })
-  .done(function(data) {
-    alert( "登出成功!");
-	show();
-  })
-  .fail(function() {
-    alert( "登出失敗！" );
-  });
-}
-
-
-window.onhashchange = function () {
-  filepath = window.location.hash.substring(1);
-  loadFile(filepath);
-  show();
-}
-
-window.onbeforeunload = function(){}
-
-$('.panel').css( "display", "none");
-
-var filepath, converter;
-var mdNewFile = '# 標題：文件不存在\n\n您可以編輯後存檔！\n## 語法\n* [[內部連結]](innerLink)\n* [外部連結](link)';
-
-function init() {
-  converter = new Showdown.converter({ extensions: ['table'] });
-  if (window.location.hash === '')
-    window.location.hash = '#main:home';
-  window.onhashchange();
-
-  $('#filepath').keypress(function(e) {
-    if (e.which == '13') {
-       e.preventDefault();
-       filepath = $('#filepath').val();
-       loadFile(filepath);
-     }
-  });
-}
-
-function switchPanel(name) {
-  $('.panel').css( "display", "none");
-  $('#'+name).css( "display", "block");
-}
-
-function templateApply(md) {
-  var templateNow = template[path().domain];
-  if (templateNow===undefined)
-    templateNow = template['wikidown'];
-  return templateNow.split('%md%').join(md); // 不能用 replace(reg, str), 因為 str 中可能有參數 ＄...$ 符號，所以改用 split + join
-}
-
-function mdToHtml(md) {
-  md  = templateApply(md);
-  md  = md.replace(/(\s)\!\[\[([^\]]*?)\]\]\((.*?)\)/gi, '$1<div class="figure"><img src="db/'+path().domain+'/img/$3"/><p class="caption">$2</p></div>'); // 內部圖片 ![[text]](file)
-  md  = md.replace(/(\s)\[\[([^\]]+?)\]\]\(([^:\)]+):([^:\)]+)\)/gi, '$1<a href="#$3:$4" class="innerLink">$2</a>'); // 內部連結 [[text]](file)
-  md  = md.replace(/(\s)\[\[([^\]]+?)\]\]\((.*?)\)/gi, '$1<a href="#'+path().domain+':$3" class="innerLink">$2</a>'); // 內部連結 [[text]](file)
-  md  = md.replace(/(\s)\[\[([^\]:]+):([^\]:]+)\]\]/gi, '$1<a href="#$2:$3" class="innerLink">$2:$3</a>'); // 內部連結 [[file]]
-  md  = md.replace(/(\s)\[\[([^\]:]+?)\]\]/gi, '$1<a href="#'+path().domain+':$2" class="innerLink">$2</a>'); // 內部連結 [[file]]
-  md  = md.replace(/(\s)\$\$([^$]+?)\$\$/gi, '$1<script type="math/tex">$2</'+'script>');// 數學式 $$[latex]$$,  刻意把 '</'+'script>' 分開，避免瀏覽器認為是真的 script 區塊
-  return converter.makeHtml(md);
-}
-
-function login() {
-  switchPanel('panelLogin');
-  $('#modeMenu').html('登入');
-}
-
-function logout() {
-  Server.logout();
-}
-
-function edit() {
-  switchPanel('panelEdit');
-  $('#modeMenu').html('編輯');
-}
-
-function show() {
-  var md = $('#mdBox').val();
-  var html = mdToHtml(md);
-  $('#htmlBox').html(html);
-  $('pre code').each(function(i, block) {
-    hljs.highlightBlock(block);
-  });
-  switchPanel('panelShow');
-  if (typeof(MathJax) !== 'undefined')
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub, "htmlBox"]);
-  $('#modeMenu').html('預覽');
-  showTitle();
-}
-
-function load() {
-  filepath = $('#filepath').val();
-  loadFile(filepath);
-}
-
-function showTitleHead(domain) {
-  var titleHead = title['wikidown'];
-  if (title[domain] !== undefined)
-    titleHead = title[domain];
-  $('#titleHead').html(titleHead);
-}
-
-function showTitle() {
-    if ($('h1').length > 0)
-      $('title').html($('#titleHead').text()+' -- '+$('h1')[0].innerText);
-    else if ($('h2').length>0)
-      $('title').html($('#titleHead').text()+' -- '+$('h2')[0].innerText);
-}
-
-function loadFile(filepath) {
-  if (filepath === null || filepath === '')
-    return;
-  $('#filepath').val(filepath);
-  showTitleHead(path().domain);
-  window.location.hash = '#'+filepath;
-  Server.load(path().domain, path().file)
-  .done(function(md) {
-    $('#mdBox').val(md);
-    show();
-  })
-  .fail(function() {
-    $('#mdBox').val(mdNewFile);
-    show();
-  });
-}
-
-function saveFile() {
-  var md = $('#mdBox').val();
-  Server.save(path().domain, path().file, md);
-}
-
-// 以下這種作法是為了加快速度，避免一開始載入 MathJax 花太久時間 ...
-document.write('<'+'script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"></'+'script>');  // 刻意把 '</'+'script>' 分開，避免瀏覽器認為是真的 script 區塊
-</script>
-
-    <script src="js/Showdown/Showdown.min.js"></script>
-    <script src="js/Showdown/extensions/table.min.js"></script>
-    <script src="js/highlight.min.js"></script>
--->
