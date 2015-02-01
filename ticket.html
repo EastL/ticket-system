@@ -85,15 +85,20 @@ var c = console;
 var seats=["1","2","3","4","5","6","7","8","9"];
 var order = [];
 var socket = io();
+
+function changeClass(jqo, fromClass, toClass) {
+	var cvalue = jqo.attr('class');
+	var cnew = cvalue.replace(fromClass, toClass);
+	c.log('cvalue='+cvalue+' cnew='+cnew);
+	jqo.attr('class', cnew);
+}
+
 function init() {
 	for (var i in seats) {
-	  $("#seats").append('<button type="button" class="btn btn-lg btn-primary ticket">'+seats[i]+'</button>');
+	  $("#seats").append('<button type="button" class="btn btn-lg btn-primary seat" id="seat'+seats[i]+'">'+seats[i]+'</button>');
 	}
-	$('.ticket').click(function() {
-		var cvalue = $(this).attr('class');
-		var cnew = cvalue.replace('btn-primary', 'btn-success');
-		c.log('cvalue='+cvalue+' cnew='+cnew);
-		$(this).attr('class', cnew);
+	$('.seat').click(function() {
+	    changeClass($(this), 'btn-primary', 'btn-success');	
 		var seat = $(this).html();
 		c.log('seat='+seat+' ');
 		order.push(seat);
@@ -105,6 +110,11 @@ function init() {
 	});
   socket.on('save order', function(order){
      c.log('broadcast: save order '+order);
+	 var seats = JSON.parse(order);
+	 for (var i in seats) {
+	    changeClass($('#seat'+seats[i]), 'btn-primary', 'btn-danger');
+		// orderArray[i] = 
+	 }
   });
 	
 }
