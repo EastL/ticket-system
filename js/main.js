@@ -17,16 +17,18 @@ function sho(dt)
 function login()
 {
 	//var dats = {name:$('#acount').val(),passwd:$('#pwd').val()};
-	//alert("LaLaLa " + dats['name'] + ' login!!');
 	$.ajax({
 		type:"POST",
 		url:"/",
-		data:{name:$('#acount').val(),passwd:$('#pwd').val()},
+		data:'{"name":"'+$('#acount').val()+'","passwd":"'+$('#pwd').val()+'"}',
 		success:function(dat)
 		{
-			alert("LaLaLa " + $('#acount').val() + ' login!!');
-			hid(200);
-			$('#tirckbgm').hide();
+			if(dat == 'err')alert("帳號已被使用");
+			else
+			{
+				hid(200);
+				$('#tirckbgm').hide();
+			}
 		}
 	});
 }

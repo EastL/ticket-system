@@ -77,9 +77,9 @@ function requestHandler(req, res) {
 				var readdata=[];
 				if(exists)fs.readFile('./json/log.json', function(err, data)
 				{
+					console.log(data.toString('utf8'));
 					if(err) console.log(err);
-					readdata=JSON.parse(data);
-					console.log(readdata);
+					readdata=JSON.parse(data.toString('utf8'));
 				});
 				console.log(readdata.length);
 				for(var i = 0; i < readdata.length; i++)
@@ -91,11 +91,21 @@ function requestHandler(req, res) {
 						res.write( msg);
 					}
 				}
+<<<<<<< HEAD
 					fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
 					{
 						if(err) console.log(err);
 						else console.log('save success');
 					});	
+=======
+				readdata.push(JSON.parse(postdata));
+				fs.writeFile('./json/log.json', JSON.stringify(readdata), function(err)
+				{
+					if(err) console.log(err);
+					else console.log('save success');
+				});
+						
+>>>>>>> e5b7c18059482be16878cb53412e9f1850e091c5
 			});
 		});
  	/*var postdata = "";
@@ -133,4 +143,4 @@ var server = http.createServer(requestHandler)
 //step 3) listen for an HTTP request on port 3000
 .listen(3000);
 
-io.listen(server);
+//io.listen(server);
