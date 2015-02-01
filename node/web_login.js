@@ -1,7 +1,8 @@
 var fs = require('fs');
-var login = {};
-
-login(functon(obj){
+function log_in(obj) {
+    this.obj = obj;
+}
+log_in.prototype.create = functon(obj){
     this.obj = obj;
     var input = '{\n' +
                   '\\t"Name" : "' + this.obj.name + '",\\n'
@@ -11,4 +12,5 @@ login(functon(obj){
         if(err) console.log(err);
         console.log("save!!");
     });
-});
+}
+global.log_in = log_in;

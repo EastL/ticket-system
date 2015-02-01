@@ -77,23 +77,27 @@ function requestHandler(req, res) {
 				var readdata=[];
 				if(exists)fs.readFile('./json/log.json', function(err, data)
 				{
+					console.log(data.toString('utf8'));
 					if(err) console.log(err);
-					readdata=JSON.parse(data);
-					console.log(readdata);
+					readdata=JSON.parse(data.toString('utf8'));
 				});
+				console.log(readdata.length);
 				for(var i = 0; i < readdata.length; i++)
 				{
+					console.log(readdata[i]["name"]);
 					if(readdata[i]["name"] == postdata["name"])
 					{
 						var msg = 'err';
 						res.write( msg);
 					}
-					else fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
-					{
-						if(err) console.log(err);
-						else console.log('save success');
-					});
-				}			
+				}
+				readdata.push(JSON.parse(postdata));
+				fs.writeFile('./json/log.json', JSON.stringify(readdata), function(err)
+				{
+					if(err) console.log(err);
+					else console.log('save success');
+				});
+						
 			});
 		});
  	/*var postdata = "";
@@ -131,4 +135,4 @@ var server = http.createServer(requestHandler)
 //step 3) listen for an HTTP request on port 3000
 .listen(3000);
 
-io.listen(server);
+//io.listen(server);
