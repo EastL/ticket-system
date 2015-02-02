@@ -1,0 +1,135 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+*{font-family: 'Open Sans', sans-serif; font-weight: 300;}
+html , body 
+{
+	width:100%;
+	height:100%;
+	padding:0;
+	margin:0;
+}
+
+
+
+
+#tirckbgm
+{
+	position: absolute;
+	left: 10%;
+	width:80%;
+	height:100%;
+	background-image: url("res/bgm.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size:100%;
+}
+#loginb
+{
+	text-decoration:none;
+	color:#111;
+	font-size: 60px;
+	font-weight: bold;
+	padding:4.5%;
+	position:absolute;
+	top:45%;
+	left:57%;
+	border-radius: 100%;
+	background-color:#113399;
+	background-image: linear-gradient(bottom, rgb(62,51,46) 0%, rgb(101,86,78) 100%);
+	box-shadow: inset 0px 1px 0px #9e8d84, 0px 8px 0px 0px #322620, 0px 20px 5px rgba(0,0,0,0.5);
+}
+#loginb:hover
+{
+	color:#ededed;
+}
+#loginb:active {
+	top:46%;
+	background-image: linear-gradient(bottom, rgb(62,51,46) 100%, rgb(101,86,78) 0%);
+	box-shadow: inset 0px 1px 0px #9e8d84, 0px 2px 0px 0px #281810, 0px 5px 3px rgba(0,0,0,0.5);
+}
+#loginb::before {
+	background-color:#113399;
+	background-repeat:no-repeat;
+	background-position:center center;
+	content:"";
+	position:absolute;
+	top:50%;
+	margin-top:-9px;
+	box-shadow: inset 0px 1px 0px #19120f, 0px 1px 0px #827066;
+}
+#loginb:active::before {
+	top:50%;
+	margin-top:-12px;
+	box-shadow: inset 0px 1px 0px #827066, 0px 3px 0px #19120f, 0px 6px 3px #382e29;
+}
+
+
+
+
+
+
+
+
+
+#outshadl
+{
+	position:absolute;
+	z-index: 1001;
+	width:100%;
+	height:100%;
+	background-color: rgba(0,0,0,0.5);
+}
+
+#loginbox
+{
+	position:absolute;
+	z-index: 1001;
+	top:23%;
+	left:33.5%;
+	width:350px;
+	height:150px;
+	background-color: #5a5a5a;
+	border:solid 5px;
+	border-radius: 10px;
+	border-color:#888;
+	padding:15px;
+}
+#lginbox{float:left;}
+
+#udata
+{
+	margin:0% 5%;
+	margin-bottom: 5%;
+	padding:0% 5%;
+	width:80%;
+	height:55%;
+}
+#udatab
+{
+	height:45%;
+}
+.colorw{color:rgba(245,255,240,0.8);}
+.loginp
+{
+	font-size:18px;
+	margin:7px 0px;
+	border-radius: 5px;
+}
+
+.inpbuton
+{
+	font-size:18px;
+	border-radius: 10px;
+	margin:2% 5%;
+	background-color:#CCC;
+}
+.inpbuton:hover{background-color: #f7f7f7;}
+
+
+
+
+
+
+
+
+
+

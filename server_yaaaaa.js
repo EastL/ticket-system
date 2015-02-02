@@ -56,6 +56,13 @@ function getFile(filePath,res,page404,mimeType){
 		};
 	});
 };
+function ajaxerror(res)
+{
+	res.writeHead(500, {'Content-Type': 'text/plain'});
+	res.end('error');
+}
+
+
 
 //a helper function to handle HTTP requests
 function requestHandler(req, res) {
@@ -69,60 +76,43 @@ function requestHandler(req, res) {
 	page404 = localFolder + '404.html';
 
 
-	var postdata = "";
+	var postdata,obj;
 	if(req.method == "POST"){
-		req.addListener("data", function(postchunk){postdata = postchunk;});
-		req.addListener("end", function(){
+		req.addListener("data", function(postchunk){postdata += postchunk;});
+		req.addListener("end", function()
+		{
 			fs.exists('./json/log.json',function(exists){
-				var readdata=[];
-				if(exists)fs.readFile('./json/log.json', function(err, data)
+				if(exists)fs.readFile('./json/log.json', function(err, datas)
 				{
-					console.log(data.toString('utf8'));
-					if(err) console.log(err);
-					readdata=JSON.parse(data.toString('utf8'));
-				});
-				console.log(readdata.length);
-				for(var i = 0; i < readdata.length; i++)
-				{
-					console.log(readdata[i]["name"]);
-					if(readdata[i]["name"] == postdata["name"])
+					//console.log(typeof(datas.toString())+"readfile: "+datas.toString());
+					obj = JSON.parse((datas.toString()));
+					//console.log(typeof(obj)+"  " +obj[0]['q']);
+					if(obj[postdata.split("\"")[1]] == null)
 					{
-						var msg = 'err';
-						res.write( msg);
+						console.log('Account Not Exist : ');
+						console.log("User : "+postdata.split("\"")[1]);
+						console.log("PWD : "+postdata.split("\"")[3]);
+						obj[postdata.split("\"")[1]] = postdata.split("\"")[3];
+						fs.writeFile('./json/log.json', JSON.stringify(obj), function(err)
+						{
+							if(err)
+								{console.log(err); ajaxerror(res);}
+							else
+							{
+								res.writeHead(200, {'Content-Type': 'text/plain'});
+								res.end('success');
+								console.log('save new account : '+postdata.split("\"")[1]+',success');
+							}
+
+						});
 					}
-				}
-<<<<<<< HEAD
-					fs.writeFile('./json/log.json', readdata.push(JSON.parse(postdata)), function(err)
-					{
-						if(err) console.log(err);
-						else console.log('save success');
-					});	
-=======
-				readdata.push(JSON.parse(postdata));
-				fs.writeFile('./json/log.json', JSON.stringify(readdata), function(err)
-				{
-					if(err) console.log(err);
-					else console.log('save success');
-				});
-						
->>>>>>> e5b7c18059482be16878cb53412e9f1850e091c5
-			});
+					ajaxerror(res);
+					if(err) {console.log("errorr =" + err);}
+				});});
+
 		});
- 	/*var postdata = "";
->>>>>>> ba507cdad9b5dce538f372a9bb8750bec78a30c1
- 	if(req.method == "POST"){
-		req.addListener("data", function(postchunk){postdata[iii++] = postchunk;});
-		req.addListener("end", function(){
-			var input = '{\n' +
-	                      '\t"Name" : "' + postdata[0] + '",\n'
-	                    + '\t"Password" : "' + postdata[1]+ '",\n'
-	                  + '}\n';
-		        fs.writeFile('./json/log.json', input, function(err){
-		        	if(err) console.log(err);
-				console.log("save!!");
-		        });
-		});*/
-	}
+
+}
 	//do we support the requested file type?
 	if(!extensions[ext]){
 		//for now just send a 404 and a short message

@@ -1,0 +1,127 @@
+﻿<html>
+<head>
+<meta charset="utf-8" />
+  <link rel="icon" href="favicon.ico">
+<!--  <link href="css/bootstrap.min.css" rel="stylesheet">-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link href="main.css" rel="stylesheet">
+  <title></title>
+</head>
+<body onload="init()">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-header" style="color:#C0C0C0">
+          <a class="navbar-brand" href="#main:home">
+		    <span class="glyphicon glyphicon-home"></span> &nbsp;
+	      </a>
+        </div>
+		<!--
+        <div id="navbar" class="navbar-collapse collapse">
+          <div id="titleHead" class="navbar-header" style="color:#C0C0C0"></div>
+		  <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span><span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a onclick="Mt.switchLang('us')">English</a></li>
+                <li><a onclick="Mt.switchLang('tw')">中文</a></li>
+              </ul>
+            </li>
+		  </ul>
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input id="filepath" type="text" class="form-control" placeholder="filepath" aria-describedby="basic-addon1">
+			  <button class="btn btn-success" type="button" onclick="load()">載入</button>
+              <button class="btn btn-success" type="button" onclick="saveFile()">儲存</button>
+			</div>
+          </form>
+		  <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="modeMenu">預覽</a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a onclick="show()">預覽</a></li>
+                <li><a onclick="edit()">編輯</a></li>
+                <li><a onclick="login()">登入</a></li>
+                <li><a onclick="logout()">登出</a></li>
+              </ul>
+            </li>
+		  </ul>
+        </div>
+      </div>-->
+    </nav>
+    <center> <!-- 編輯 -->
+      <div id="panelTicket" class="tab-pane" style="width:90%; height:90%;">
+	  <!--
+        <button type="button" class="btn btn-lg btn-primary">1</button>
+		<button type="button" class="btn btn-lg btn-primary">2</button>
+		<button type="button" class="btn btn-lg btn-primary">3</button>
+		<button type="button" class="btn btn-lg btn-primary">5</button>
+		<button type="button" class="btn btn-lg btn-primary">6</button>
+		<button type="button" class="btn btn-lg btn-primary">7</button>
+		<button type="button" class="btn btn-lg btn-primary">8</button>
+		<button type="button" class="btn btn-lg btn-primary">9</button>
+		-->
+		<div class="row" id="seats">
+		</div>
+		<div class="row">
+		   <br/>
+		   <button id="save" type="button" class="btn btn-lg btn-success">確定下單</button>
+		</div>
+	  </div>
+	</center>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <!--<script src="js/jquery.min.js"></script>-->
+    <!--<script src="js/bootstrap.min.js"></script>-->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <!--<script src="config.js"></script>-->
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script>
+var c = console;
+var seats=["1","2","3","4","5","6","7","8","9"];
+var order = [];
+var socket = io();
+
+function changeClass(jqo, fromClass, toClass) {
+	var cvalue = jqo.attr('class');
+	var cnew = cvalue.replace(fromClass, toClass);
+	c.log('cvalue='+cvalue+' cnew='+cnew);
+	jqo.attr('class', cnew);
+}
+
+function init() {
+	for (var i in seats) {
+	  $("#seats").append('<button type="button" class="btn btn-lg btn-primary seat" id="seat'+seats[i]+'">'+seats[i]+'</button>');
+	}
+	$('.seat').click(function() {
+	    changeClass($(this), 'btn-primary', 'btn-success');	
+		var seat = $(this).html();
+		c.log('seat='+seat+' ');
+		order.push(seat);
+		c.log('order='+order);
+	});
+	$('#save').click(function() {
+		c.log('save order '+order);
+    		socket.emit('save order', JSON.stringify(order));
+	});
+  socket.on('save order', function(order){
+     c.log('broadcast: save order '+order);
+	 var seats = JSON.parse(order);
+	 for (var i in seats) {
+	    changeClass($('#seat'+seats[i]), 'btn-primary', 'btn-danger');
+		// orderArray[i] = 
+	 }
+  });
+	
+}
+</script>
+
+<!--    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"></script>-->
+
+
+</body>
+</html>
